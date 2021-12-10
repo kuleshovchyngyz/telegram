@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="7dcd1e92-705a-41b7-882b-95b7d8c65163" name="telegram">
+        <fileTransfer rootFolder="/home/admin/web/t.kuleshov.studio/public_html" accessType="SFTP" host="193.164.149.61" port="22" sshConfigId="1c7fb95a-9fba-41f4-aa72-c928eb647176" sshConfig="admin@193.164.149.61:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
