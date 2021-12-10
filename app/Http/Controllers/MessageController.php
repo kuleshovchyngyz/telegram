@@ -90,6 +90,7 @@ class MessageController extends Controller
                     SendTelegramJob::dispatch([
                         'chat_id' =>$t_user['t_id'],
                         'text' => $message["message"],
+						'company' => Company::find($message["company_id"]),
 						'parse_mode' => 'HTML'
                     ])->delay(now()->addSeconds(20));
                     Message::where("id",$message["id"])->update(['status'=>true]);

@@ -4,6 +4,7 @@ $('#telegramBot div').click(function () {
     response('get',`/bot/${id}`,'null').then(data => {
         console.log(data);
         window.location.href = '/';
+
     });
 });
 

@@ -21,10 +21,11 @@ class SendTelegramJob implements ShouldQueue
      * @param $data
      */
 
-    protected $data;
+    protected $data,$bot;
 
     public function __construct($data)
     {
+        $this->bot = $data['company'] ?? false;
         $this->data = $data;
     }
 
@@ -35,6 +36,7 @@ class SendTelegramJob implements ShouldQueue
      */
     public function handle()
     {
+
         Telegram::sendMessage($this->data);
 
     }

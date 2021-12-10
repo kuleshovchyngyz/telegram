@@ -70,6 +70,7 @@ class CompanyController extends Controller
             'token'=>$request->token
         ]);
 
+
         return redirect()->back()->with('success_message', 'Бот создан');
     }
     public function create(Request $request)

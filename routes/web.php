@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-
+use Telegram\Bot\Api;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,11 +27,31 @@ Route::get('/api/sample', function() {
     return $json;
 })->name('apilink');
 Route::get('bot/sendmessage', function() {
-    $sent = Telegram::sendMessage([
-        'chat_id' => '5552644',
+    $telegram = new Api('1787584844:AAGLyrZ-1L8Ssg4Ys_sLIz8umQ5RrFJVI58');
+    $sent = $telegram->sendMessage([
+        'chat_id' => '555264497',
         'text' => 'Hello world!'
     ]);
-    dump($sent);
+
+    try {
+
+        $telegram = new Api('1709979892:AAEhRif1lR7vNZzd0nOJ8MEx7_jtoU8Hs3M');
+//        $response = $telegram->getMe();
+        $response = $telegram->setWebhook(['url' => 'https://t.kuleshov.studio/api/webhook']);
+        dump($response);
+    } catch (Exception $e) {
+        if($e->getMessage()=='Unauthorized'){
+            dump('invalid token');
+        }
+    }
+
+//    $response = $telegram->setWebhook(['url' => 'https://t.kuleshov.studio/api/webhook']);
+
+//    $telegram->sendMessage([
+//        'chat_id' => '555264497',
+//        'text' => 'Hellzxczxo world!'
+//    ]);
+
     return;
 });
 

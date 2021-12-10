@@ -47,7 +47,7 @@ class TuserController extends Controller
         \Storage::append('responses.txt', json_encode($request->all(),JSON_UNESCAPED_UNICODE));
 
 		// $reply_text = '<strong>'.strval($user_name).'</strong>,'.' вы были успешно зарегистрированы';
-					// Telegram::sendMessage([
+					// SendTelegramJob::dispatch([
 					// 'chat_id' => $user_id,
 					// 'text' => $reply_text,
 					// 'parse_mode'=>'HTML'
@@ -64,6 +64,12 @@ class TuserController extends Controller
 		$last_name = isset($update['message']['chat']['last_name']) ? $update['message']['chat']['last_name'] : '';
 		$user_name =  isset($update['message']['chat']['username']) ? $update['message']['chat']['username'] : '';
 		$text  = isset($update['message']['text']) ? $update['message']['text'] : '';
+		$button = $update['message']['entities'] ?? false;
+
+		if(!$button){
+            \Storage::append('bot.txt', time() );
+            \Storage::append('bot.txt',$button);
+        }
 		$text = trim($text);
 		$old_member_status = "member";
 		$new_member_status = "member";
@@ -113,7 +119,7 @@ class TuserController extends Controller
 					$text = 'Пожалуйста, отправьте код организации';
 				}
 				$reply_text = '<strong>'.strval($user_name).'</strong>,'.' пожалуйста, отправьте код организации';
-				Telegram::sendMessage([
+				SendTelegramJob::dispatch([
 				'chat_id' => $user_id,
 				'text' => $reply_text,
 				'parse_mode'=>'HTML'
@@ -132,7 +138,7 @@ class TuserController extends Controller
 					}
 
 					$reply_text = '<strong>'.strval($user_name).'</strong>,	'.'укажите правилный код организации!';
-					Telegram::sendMessage([
+					SendTelegramJob::dispatch([
 					'chat_id' => $user_id,
 					'text' => $reply_text,
 					'parse_mode'=>'HTML'
@@ -145,8 +151,6 @@ class TuserController extends Controller
 					->where('company_id',$company_id)
 					->count();
 				if($user) {
-
-
 					//update user name last name first name
 					 Tuser::where('t_id',$user_id)
 					->where('company_id',$company_id)
@@ -164,7 +168,7 @@ class TuserController extends Controller
 						$reply_text = 'Вы уже подписались на уведомления!';
 					}
 					$reply_text = '<strong>'.strval($user_name).'</strong>,'.' вы уже подписались на уведомления!';
-					Telegram::sendMessage([
+					SendTelegramJob::dispatch([
 					'chat_id' => $user_id,
 					'text' => $reply_text,
 					'parse_mode'=>'HTML'
@@ -188,13 +192,11 @@ class TuserController extends Controller
 						$reply_text = 'Вы были успешно зарегистрированы';
 					}
 					$reply_text = '<strong>'.strval($user_name).'</strong>,'.' вы были успешно зарегистрированы';
-					Telegram::sendMessage([
+					SendTelegramJob::dispatch([
 					'chat_id' => $user_id,
 					'text' => $reply_text,
 					'parse_mode'=>'HTML'
 					]);
-
-
 
 			break;
 		}
