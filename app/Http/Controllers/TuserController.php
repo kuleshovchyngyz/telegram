@@ -65,7 +65,7 @@ class TuserController extends Controller
 		$user_name =  isset($update['message']['chat']['username']) ? $update['message']['chat']['username'] : '';
 		$text  = isset($update['message']['text']) ? $update['message']['text'] : '';
 		$button = $update['message']['entities'] ?? false;
-        \Storage::append('bot.txt', $button );
+        \Storage::append('bot.txt', $text );
 		if(!$button){
             \Storage::append('bot.txt', time() );
             \Storage::append('bot.txt',$button);
