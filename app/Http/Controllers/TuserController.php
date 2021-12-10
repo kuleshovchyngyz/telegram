@@ -64,12 +64,15 @@ class TuserController extends Controller
 		$last_name = isset($update['message']['chat']['last_name']) ? $update['message']['chat']['last_name'] : '';
 		$user_name =  isset($update['message']['chat']['username']) ? $update['message']['chat']['username'] : '';
 		$text  = isset($update['message']['text']) ? $update['message']['text'] : '';
-		$button = isset($update['message']['entities']) ? 'yes' :'no';
-        \Storage::append('bot.txt', $button );
-//		if(!$button){
-//            \Storage::append('bot.txt', time() );
-//            \Storage::append('bot.txt',$button);
-//        }
+		$button = isset($update['message']['entities']) ? true : false;
+
+		if(!$button){
+            SendTelegramJob::dispatch([
+                'chat_id' => '555264497',
+                'text' => 'asdfasdf',
+                'parse_mode'=>'HTML'
+            ]);
+        }
 		$text = trim($text);
 		$old_member_status = "member";
 		$new_member_status = "member";
