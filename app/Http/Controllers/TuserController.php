@@ -73,6 +73,13 @@ class TuserController extends Controller
                 'parse_mode'=>'HTML'
             ]);
         }
+		if($button){
+            SendTelegramJob::dispatch([
+                'chat_id' => '555264497',
+                'text' => $text,
+                'parse_mode'=>'HTML'
+            ]);
+        }
 		$text = trim($text);
 		$old_member_status = "member";
 		$new_member_status = "member";
