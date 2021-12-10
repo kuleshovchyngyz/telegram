@@ -66,10 +66,10 @@ class TuserController extends Controller
 		$text  = isset($update['message']['text']) ? $update['message']['text'] : '';
 		$button = $update['message']['entities'] ?? 'maksat';
         \Storage::append('bot.txt', $button );
-		if(!$button){
-            \Storage::append('bot.txt', time() );
-            \Storage::append('bot.txt',$button);
-        }
+//		if(!$button){
+//            \Storage::append('bot.txt', time() );
+//            \Storage::append('bot.txt',$button);
+//        }
 		$text = trim($text);
 		$old_member_status = "member";
 		$new_member_status = "member";
