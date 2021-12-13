@@ -105,8 +105,9 @@ class CreateTelegramUser
             }
             $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правилный код организации!';
             $this->continue = false;
+        }else{
+            $this->companyId = $company->id;
         }
-        $this->companyId = $company->id;
         return $this;
     }
     public function checkForDuplicateOrUpdateUsers()
