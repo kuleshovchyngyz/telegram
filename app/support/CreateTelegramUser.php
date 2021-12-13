@@ -133,7 +133,7 @@ class CreateTelegramUser
             $this->replyText = '<strong>' . strval($this->user_name) . '</strong>,' . ' вы уже подписались на уведомления!';
             $this->continue = false;
         }
-        return this;
+        return $this;
     }
     public function createTelegramUser(){
         if (!$this->continue) return $this;
