@@ -105,14 +105,14 @@ class CreateTelegramUser
             }
             $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правилный код организации!';
             $this->continue = false;
-        }else{
-            $this->companyId = $company->id;
         }
         return $this;
     }
     public function checkForDuplicateOrUpdateUsers()
     {
         if (!$this->continue) return $this;
+        $company = Company::where('usercode',$this->text)->first();
+        $this->companyId = $company->id;
         $user = Tuser::where('t_id', $this->user_id)
             ->where('company_id', $this->companyId)
             ->count();
