@@ -19,6 +19,7 @@ class CreateTelegramUser
     protected $continue;
     protected $replyText;
     protected $companyId;
+    protected $column;
     public function __construct($request)
     {
         if ($request->isJson()) {
@@ -30,6 +31,7 @@ class CreateTelegramUser
             $this->user_name =  $this->load['message']['chat']['username'] ?? '';
             $this->continue = true;
             $this->replyText = '';
+            $this->column = 'usercode';
             $this->register();
         }
     }
@@ -53,6 +55,7 @@ class CreateTelegramUser
         $this->fromLinkButton = isset($this->load['message']['entities']) ? true : false;
         if($this->fromLinkButton && $this->text!=='/start'){
             $this->text = trim(str_replace('/start ','',$this->text));
+            $this->column = 'companycode';
         }
         return $this;
     }
@@ -98,12 +101,12 @@ class CreateTelegramUser
     }
     public function checkForValidCompany(){
         if(!$this->continue) return $this;
-        $company = Company::where('usercode',$this->text)->first();
+        $company = Company::where($this->column,$this->text)->first();
         if(!$company) {
             if($this->user_name ==""){
-                $this->replyText = 'Укажите правилный код организации!';
+                $this->replyText = 'Укажите правильный код организации!';
             }
-            $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правилный код организации!';
+            $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правильный код организации!';
             $this->continue = false;
         }else{
             $this->companyId = $company->id;
@@ -152,6 +155,7 @@ class CreateTelegramUser
         $this->continue = false;
         return $this;
     }
+
     public function reply(){
         if($this->replyText !=''){
             SendTelegramJob::dispatch([
@@ -164,7 +168,12 @@ class CreateTelegramUser
     }
 
 
-
-
+    /**
+     * @return int|mixed
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
 
 }

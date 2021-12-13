@@ -44,7 +44,12 @@ class TuserController extends Controller
     }
     public function webhook(Request $request)
     {
-        new CreateTelegramUser($request);
+        $user = new CreateTelegramUser($request);
+        SendTelegramJob::dispatch([
+			 'chat_id' => $user->getUserId(),
+			 'text' => $user->getUserId(),
+			 'parse_mode'=>'HTML'
+		]);
 
 //        \Storage::append('responses.txt', time() );
 //        \Storage::append('responses.txt', json_encode($request->all(),JSON_UNESCAPED_UNICODE));
