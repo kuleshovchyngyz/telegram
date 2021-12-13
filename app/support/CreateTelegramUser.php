@@ -9,6 +9,7 @@ use App\Models\Tuser;
 class CreateTelegramUser
 {
     protected $text;
+    protected $request;
     protected $load;
     protected $user_id;
     protected $last_name;
@@ -21,6 +22,7 @@ class CreateTelegramUser
     public function __construct($request)
     {
         if ($request->isJson()) {
+            $this->request = $request
             $this->load = $request->all();
             $this->user_id = $this->load['message']['chat']['id'] ?? 0;
             $this->first_name = $this->load['message']['chat']['first_name'] ?? '';
@@ -58,7 +60,7 @@ class CreateTelegramUser
         if(!$this->continue) return $this;
         $old_member_status = "member";
         $new_member_status = "member";
-        $request_arr = json_decode($this->load->getContent(), true);
+        $request_arr = json_decode($this->request->getContent(), true);
         if(isset($request_arr['my_chat_member']) && !empty($request_arr['my_chat_member'])) {
             $new_member_status = (isset($request_arr['my_chat_member']['new_chat_member'])) ? $request_arr['my_chat_member']['new_chat_member']['status'] : '';
             $old_member_status = (isset($request_arr['my_chat_member']['old_chat_member'])) ? $request_arr['my_chat_member']['old_chat_member']['status'] : '';
