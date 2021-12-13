@@ -67,18 +67,11 @@ class TuserController extends Controller
 		$text  = isset($update['message']['text']) ? $update['message']['text'] : '';
 		$button = isset($update['message']['entities']) ? true : false;
 
-		if(!$button){
-            $text = Crypt::decrypt($text);
-            SendTelegramJob::dispatch([
-                'chat_id' => '555264497',
-                'text' => $text,
-                'parse_mode'=>'HTML'
-            ]);
-        }
+
 		if($button){
             SendTelegramJob::dispatch([
                 'chat_id' => '555264497',
-                'text' => $text,
+                'text' => $text.'===',
                 'parse_mode'=>'HTML'
             ]);
         }
