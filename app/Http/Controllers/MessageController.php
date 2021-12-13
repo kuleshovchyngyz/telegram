@@ -78,7 +78,8 @@ class MessageController extends Controller
             $this->sendMessageToUsers();
         }
     }
-    public function sendMessageToUsers(){
+    public function sendMessageToUsers()
+    {
         $messages = Message::where('status', false)->get(['*']);
         $t_users = Tuser::where('active',true)->get(['company_id','t_id','first_name','username']);
         foreach ($t_users as $t_user)

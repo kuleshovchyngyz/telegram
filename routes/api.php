@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/getmessages', [App\Http\Controllers\MessageController::class, 'getmessages'])->middleware('throttle:10,1')->name('api');
+
 Route::post('/webhook', [App\Http\Controllers\TuserController::class, 'webhook']);
 //Route::post('/getmessages', function (Request $request){
 //    if ($request->isJson()) {

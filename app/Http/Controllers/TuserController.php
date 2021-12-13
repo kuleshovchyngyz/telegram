@@ -6,6 +6,7 @@ use App\Models\Tuser;
 use Illuminate\Http\Request;
 use App\Models\Company;
 
+use Illuminate\Support\Facades\Crypt;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Jobs\SendTelegramJob;
 class TuserController extends Controller
@@ -67,9 +68,10 @@ class TuserController extends Controller
 		$button = isset($update['message']['entities']) ? true : false;
 
 		if(!$button){
+            $text = Crypt::decrypt($text);
             SendTelegramJob::dispatch([
                 'chat_id' => '555264497',
-                'text' => 'asdfasdf',
+                'text' => $text,
                 'parse_mode'=>'HTML'
             ]);
         }
