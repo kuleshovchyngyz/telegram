@@ -142,7 +142,7 @@ class CreateTelegramUser
             'first_name' => $this->first_name ,
             'last_name' => $this->last_name ,
             'username' =>  $this->user_name,
-            'company_id' => $this->company_id
+            'company_id' => $this->companyId
         ]);
 
         if($this->user_name ==""){
