@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tuser;
+use App\support\CreateTelegramUser;
 use Illuminate\Http\Request;
 use App\Models\Company;
 
@@ -43,6 +44,7 @@ class TuserController extends Controller
     }
     public function webhook(Request $request)
     {
+        new CreateTelegramUser($request);
 
         \Storage::append('responses.txt', time() );
         \Storage::append('responses.txt', json_encode($request->all(),JSON_UNESCAPED_UNICODE));
