@@ -105,27 +105,27 @@ class CreateTelegramUser
             }
             $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правилный код организации!';
             $this->continue = false;
+        }else{
+            $this->companyId = $company->id;
         }
         return $this;
     }
     public function checkForDuplicateOrUpdateUsers()
     {
         if (!$this->continue) return $this;
-        $company = Company::where('usercode',$this->text)->first();
-        $this->companyId = $company->id;
         $user = Tuser::where('t_id', $this->user_id)
             ->where('company_id', $this->companyId)
             ->count();
         if ($user) {
             //update user name last name first name
             Tuser::where('t_id', $this->user_id)
-                ->where('company_id', $this->company_id)
+                ->where('company_id', $this->companyId)
                 ->update([
                     't_id' => $this->user_id,
                     'first_name' => $this->first_name,
                     'last_name' => $this->last_name,
                     'username' => $this->user_name,
-                    'company_id' => $this->company_id
+                    'company_id' => $this->companyId
                 ]);
             if ($this->user_name == "") {
                 $this->replyText = 'Вы уже подписались на уведомления!';
