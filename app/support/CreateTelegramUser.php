@@ -22,7 +22,7 @@ class CreateTelegramUser
     public function __construct($request)
     {
         if ($request->isJson()) {
-            $this->request = $request
+            $this->request = $request;
             $this->load = $request->all();
             $this->user_id = $this->load['message']['chat']['id'] ?? 0;
             $this->first_name = $this->load['message']['chat']['first_name'] ?? '';
