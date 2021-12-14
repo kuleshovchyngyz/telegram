@@ -177,3 +177,15 @@ class CreateTelegramUser
     }
 
 }
+
+
+//function check($string) {
+//    $string = str_replace(['()', '{}', '[]'], '', $string, $count);
+//    while ($count){
+//        $string = str_replace(['()', '{}', '[]'], '', $string, $count);
+//    }
+//
+//    return $string==='' ? 'true' : 'false';
+//}
+
+

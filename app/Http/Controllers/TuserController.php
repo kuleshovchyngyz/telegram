@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Http;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Jobs\SendTelegramJob;
 class TuserController extends Controller
@@ -42,9 +43,22 @@ class TuserController extends Controller
     {
         //
     }
+    public function toPartner( $data) {
+        // $webhook_url = "https://b24-4goccw.bitrix24.ru/rest/1/gfb5rzf8p5iwam80/";//test
+
+        $webhook_url = " http://partner.kuleshov.studio/api/telegram";
+        $res = Http::timeout(5)->post($webhook_url,$data);
+        return json_decode($res->body(), 1);
+
+    }
+
     public function webhook(Request $request)
     {
         $user = new CreateTelegramUser($request);
+//        http://partner.kuleshov.studio/api/getstatuses
+        $data = ["companycode" => "co78c6c316db063", "data" => [["message" => $user->getUserId()]]];
+        $data_string = json_encode($data);
+        $this->toPartner($data_string);
         SendTelegramJob::dispatch([
 			 'chat_id' => $user->getUserId(),
 			 'text' => $user->getUserId(),

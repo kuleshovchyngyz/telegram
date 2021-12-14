@@ -13,6 +13,10 @@ use Telegram\Bot\Api;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/register', function () {
+    return redirect()->route('login');
+});
 Route::get('/bot/getupdates', function() {
     $updates = Telegram::getUpdates();
     return (json_encode($updates));
@@ -55,7 +59,16 @@ Route::get('bot/sendmessage', function() {
     return;
 });
 
-Auth::routes();
+
+Auth::routes([
+
+    'register' => false, // Register Routes...
+
+    'reset' => false, // Reset Password Routes...
+
+    'verify' => false, // Email Verification Routes...
+
+]);
 Route::group(['middleware' => 'auth'], function () {
 //https://api.telegram.org/bot1746041949:AAEvdrG0yeR6W2Wn1FmKu9zB7qCuILhK6Jk/setWebhook?url=http://telegram/webhook
 
