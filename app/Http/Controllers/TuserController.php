@@ -56,9 +56,9 @@ class TuserController extends Controller
     {
         $user = new CreateTelegramUser($request);
 //        http://partner.kuleshov.studio/api/getstatuses
-        $data = ["companycode" => "co78c6c316db063", "data" => [["message" => $user->getUserId()]]];
-        $data_string = json_encode($data);
-        $this->toPartner($data_string);
+//        $data = ["companycode" => "co78c6c316db063", "data" => [["message" => $user->getUserId()]]];
+//        $data_string = json_encode($data);
+//        $this->toPartner($data_string);
         SendTelegramJob::dispatch([
 			 'chat_id' => $user->getUserId(),
 			 'text' => $user->getUserId(),
