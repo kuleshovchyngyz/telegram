@@ -43,10 +43,10 @@ class TuserController extends Controller
     {
         //
     }
-    public function toPartner( $data) {
+    public function toPartner($webhook_url, $data) {
         // $webhook_url = "https://b24-4goccw.bitrix24.ru/rest/1/gfb5rzf8p5iwam80/";//test
 
-        $webhook_url = "http://partner.kuleshov.studio/api/telegram";
+
         $res = Http::timeout(5)->post($webhook_url,$data);
 //        return json_decode($res->body(), 1);
 
@@ -55,8 +55,11 @@ class TuserController extends Controller
     public function webhook(Request $request)
     {
         $user = new CreateTelegramUser($request);
-        $data = ["companycode" => "co489d47e10e2ab", "data" => [["message" =>$user->getUserId() ]]];
-        $this->toPartner($data);
+        if($user->fromLinkButton){
+            $webhook_url = $user->url;
+            $data = ["userId" => $user->getUserId(),'url'=>$webhook_url];
+            $this->toPartner( "http://partner.kuleshov.studio/api/telegram",$data);
+        }
         SendTelegramJob::dispatch([
 			 'chat_id' => $user->getUserId(),
 			 'text' => $user->getUserId(),

@@ -15,11 +15,12 @@ class CreateTelegramUser
     protected $last_name;
     protected $first_name;
     protected $user_name;
-    protected $fromLinkButton;
+    public $fromLinkButton;
     protected $continue;
     protected $replyText;
     protected $companyId;
     protected $column;
+    public $url;
     public function __construct($request)
     {
         if ($request->isJson()) {
@@ -46,18 +47,26 @@ class CreateTelegramUser
         ;
     }
     public function determineText(){
-        if(!$this->continue) return $this;
         $this->text  = $this->load['message']['text'] ?? '';
         $this->text = trim($this->text);
         if($this->text == ''){
             $this->continue = false;
         }
+        if(!$this->continue) return $this;
+
+
         $this->fromLinkButton = isset($this->load['message']['entities']) ? true : false;
         if($this->fromLinkButton && $this->text!=='/start'){
             $this->text = trim(str_replace('/start ','',$this->text));
+            if(preg_match('/\[(.*?)\]/', $this->text, $matches)){
+                $url = $matches[0];
+                $this->text = trim(str_replace($url,'',$this->text));
+                $this->url = str_replace(['[',']'],'',$url);
+            }
             $this->column = 'companycode';
         }
         return $this;
+        //preg_match('/\[(.*?)\]/', '[http://partner.kuleshov.studio/api/telegram]', $matches);
     }
     public function dealWithUnfollowedUser(){
         if(!$this->continue) return $this;
