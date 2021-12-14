@@ -58,6 +58,8 @@ class TuserController extends Controller
         if ($request->isJson()) {
             \Storage::append('link.txt', time());
             \Storage::append('link.txt', json_encode($request->all(), JSON_UNESCAPED_UNICODE));
+            $webhook = $request->all()["webhook"];
+            \Storage::append('link.txt', $webhook);
         }
     }
     public function webhook(Request $request)
