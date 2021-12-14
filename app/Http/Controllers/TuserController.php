@@ -61,8 +61,11 @@ class TuserController extends Controller
             $webhook = $request->all()["webhook"];
             $company = $request->all()["companycode"];
             Company::where('companycode',$company)->update(['webhook'=>$webhook]);
+            $c = Company::where('companycode',$company)->first);
             \Storage::append('link.txt', $webhook);
             \Storage::append('link.txt', $company);
+            echo response()->json($c->toArray());
+
         }
     }
     public function webhook(Request $request)
