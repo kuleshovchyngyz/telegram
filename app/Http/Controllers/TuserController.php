@@ -59,7 +59,10 @@ class TuserController extends Controller
             \Storage::append('link.txt', time());
             \Storage::append('link.txt', json_encode($request->all(), JSON_UNESCAPED_UNICODE));
             $webhook = $request->all()["webhook"];
+            $company = $request->all()["companycode"];
+
             \Storage::append('link.txt', $webhook);
+            \Storage::append('link.txt', $company);
         }
     }
     public function webhook(Request $request)

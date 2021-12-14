@@ -13,7 +13,8 @@ class Company extends Model
         'name',
         'companycode',
 		'usercode',
-		'telegram_bot_id'
+		'telegram_bot_id',
+        'webhook'
 
     ];
     /**
