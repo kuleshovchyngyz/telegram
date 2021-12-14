@@ -48,7 +48,7 @@ class TuserController extends Controller
 
         $webhook_url = "http://partner.kuleshov.studio/api/telegram";
         $res = Http::timeout(5)->post($webhook_url,$data);
-        return json_decode($res->body(), 1);
+//        return json_decode($res->body(), 1);
 
     }
 
