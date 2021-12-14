@@ -64,7 +64,7 @@ class TuserController extends Controller
             $c = Company::where('companycode',$company)->first();
             \Storage::append('link.txt', $webhook);
             \Storage::append('link.txt', $company);
-            echo response()->json($c->toArray());
+           return 'asdfasdf';
         }
     }
     public function webhook(Request $request)
