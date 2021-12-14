@@ -47,8 +47,7 @@ class CreateTelegramUser
         ;
     }
     public function determineText(){
-                \Storage::append('responses.txt', time() );
-        \Storage::append('responses.txt', json_encode($this->request->all(),JSON_UNESCAPED_UNICODE));
+
         $this->text  = $this->load['message']['text'] ?? '';
         $this->text = trim($this->text);
         if($this->text == ''){

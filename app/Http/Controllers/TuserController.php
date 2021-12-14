@@ -52,6 +52,14 @@ class TuserController extends Controller
 
     }
 
+
+    public function webhookLink(Request $request)
+    {
+        if ($request->isJson()) {
+            \Storage::append('link.txt', time());
+            \Storage::append('link.tx', json_encode($this->request->all(), JSON_UNESCAPED_UNICODE));
+        }
+    }
     public function webhook(Request $request)
     {
         $user = new CreateTelegramUser($request);
