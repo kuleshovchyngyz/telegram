@@ -65,7 +65,6 @@ class TuserController extends Controller
             \Storage::append('link.txt', $webhook);
             \Storage::append('link.txt', $company);
             echo response()->json($c->toArray());
-
         }
     }
     public function webhook(Request $request)
