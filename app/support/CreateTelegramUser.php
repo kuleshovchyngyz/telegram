@@ -127,13 +127,9 @@ class CreateTelegramUser
     {
         if (!$this->continue) return $this;
         $user = Tuser::where('t_id', $this->user_id)
-            ->where('company_id', $this->companyId)
-            ->count();
-        if ($user) {
-            //update user name last name first name
-            Tuser::where('t_id', $this->user_id)
-                ->where('company_id', $this->companyId)
-                ->update([
+            ->where('company_id', $this->companyId);
+        if ($user ->count()) {
+            $user->update([
                     't_id' => $this->user_id,
                     'first_name' => $this->first_name,
                     'last_name' => $this->last_name,
@@ -165,7 +161,6 @@ class CreateTelegramUser
         $this->continue = false;
         return $this;
     }
-
     public function reply(){
         if($this->replyText !=''){
             SendTelegramJob::dispatch([
@@ -184,6 +179,14 @@ class CreateTelegramUser
     public function getUserId()
     {
         return $this->user_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompanyId()
+    {
+        return $this->companyId;
     }
 
 }

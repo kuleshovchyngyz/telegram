@@ -72,7 +72,7 @@ class TuserController extends Controller
     {
         $user = new CreateTelegramUser($request);
         if($user->fromLinkButton){
-            $webhook_url = $user->url;
+            $webhook_url = Company::find($user->getCompanyId()->webhook);
             $data = ["userId" => $user->getUserId(),'url'=>$webhook_url];
             $this->toPartner( "http://partner.kuleshov.studio/api/telegram",$data);
         }
