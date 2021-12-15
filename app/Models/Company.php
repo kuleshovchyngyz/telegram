@@ -25,4 +25,8 @@ class Company extends Model
      * @var mixed
      */
     private $botusername;
+    public function telegramBot(){
+        return $this->belongsTo(TelegramBot::class);
+
+    }
 }
