@@ -74,12 +74,13 @@ class TuserController extends Controller
             $data = ["userId" => $user->getUserId(),'url'=>$webhook_url];
             $res = Http::timeout(5)->post($webhook_url,$data);
             \Storage::append('ssdd.txt', json_encode($res->body()));
+            SendTelegramJob::dispatch([
+                'chat_id' => $user->getUserId(),
+                'text' => $webhook_url,
+                'parse_mode'=>'HTML'
+            ]);
         }
-        SendTelegramJob::dispatch([
-			 'chat_id' => $user->getUserId(),
-			 'text' => 656465,
-			 'parse_mode'=>'HTML'
-		]);
+
 
 //        \Storage::append('responses.txt', time() );
 //        \Storage::append('responses.txt', json_encode($request->all(),JSON_UNESCAPED_UNICODE));
