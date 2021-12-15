@@ -70,7 +70,7 @@ class TuserController extends Controller
     {
         $user = new CreateTelegramUser($request);
         if($user->fromLinkButton){
-            $webhook_url = $user->getCompany()===null ? $user->getCompany()->webhook : false;
+            $webhook_url = $user->getCompany()!==null ? $user->getCompany()->webhook : false;
             if(!$webhook_url){
                 \Storage::append('ssdd.txt',$webhook_url);
                 $data = ["userId" => $user->getUserId(),'url'=>$webhook_url];
