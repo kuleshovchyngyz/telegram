@@ -27,6 +27,5 @@ class Company extends Model
     private $botusername;
     public function telegramBot(){
         return $this->belongsTo(TelegramBot::class);
-
     }
 }
