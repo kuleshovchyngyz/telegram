@@ -58,8 +58,9 @@ class CreateTelegramUser
         if(!$this->continue) return $this;
 
 
-        $this->fromLinkButton = isset($this->load['message']['entities']) ? true : false;
-        if($this->fromLinkButton && $this->text!=='/start'){
+        $this->fromLinkButton = (isset($this->load['message']['entities'])&& $this->text!=='/start') ? true : false;
+
+        if($this->fromLinkButton){
             $this->text = trim(str_replace('/start ','',$this->text));
             if(preg_match('/\[(.*?)\]/', $this->text, $matches)){
                 $url = $matches[0];
