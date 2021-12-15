@@ -73,7 +73,7 @@ class TuserController extends Controller
             $webhook_url =  $user->getCompany()->webhook ;
 
                 \Storage::append('ssdd.txt',$webhook_url);
-                $data = ["userId" => $user->getUserId(),'url'=>$webhook_url];
+                $data = ["userId" => $user->getUserId()];
                 $res = Http::post($webhook_url,$data);
                 //\Storage::append('ssdd.txt', json_encode($res->collect()->toArray()));
                 SendTelegramJob::dispatch([
