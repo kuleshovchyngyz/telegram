@@ -55,6 +55,7 @@ class TuserController extends Controller
 
     public function webhookLink(Request $request)
     {
+
         if($request->isJson()){
             \Storage::append('link.txt', time());
             \Storage::append('link.txt', json_encode($request->all(), JSON_UNESCAPED_UNICODE));
