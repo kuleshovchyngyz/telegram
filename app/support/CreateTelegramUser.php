@@ -19,6 +19,7 @@ class CreateTelegramUser
     protected $continue;
     protected $replyText;
     protected $companyId;
+    protected $company;
     protected $column;
     public $url;
     public function __construct($request)
@@ -32,6 +33,7 @@ class CreateTelegramUser
             $this->user_name =  $this->load['message']['chat']['username'] ?? '';
             $this->continue = true;
             $this->replyText = '';
+            $this->company = null;
             $this->column = 'usercode';
             $this->register();
         }
@@ -119,6 +121,7 @@ class CreateTelegramUser
             $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правильный код организации!';
             $this->continue = false;
         }else{
+            $this->company = $company;
             $this->companyId = $company->id;
         }
         return $this;
@@ -187,6 +190,14 @@ class CreateTelegramUser
     public function getCompanyId()
     {
         return $this->companyId;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCompany()
+    {
+        return $this->company;
     }
 
 }

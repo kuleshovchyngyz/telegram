@@ -70,15 +70,18 @@ class TuserController extends Controller
     {
         $user = new CreateTelegramUser($request);
         if($user->fromLinkButton){
-            $webhook_url = Company::find($user->getCompanyId())->webhook;
-            $data = ["userId" => $user->getUserId(),'url'=>$webhook_url];
-            $res = Http::timeout(5)->post($webhook_url,$data);
-            \Storage::append('ssdd.txt', json_encode($res->collect()->toArray()));
-            SendTelegramJob::dispatch([
-                'chat_id' => $user->getUserId(),
-                'text' => $webhook_url,
-                'parse_mode'=>'HTML'
-            ]);
+            $webhook_url = $user->getCompany()===null ? $user->getCompany()->webhook : false;
+            if(!$webhook_url){
+                \Storage::append('ssdd.txt',$webhook_url);
+                $data = ["userId" => $user->getUserId(),'url'=>$webhook_url];
+                $res = Http::timeout(5)->post($webhook_url,$data);
+                \Storage::append('ssdd.txt', json_encode($res->collect()->toArray()));
+                SendTelegramJob::dispatch([
+                    'chat_id' => $user->getUserId(),
+                    'text' => $webhook_url,
+                    'parse_mode'=>'HTML'
+                ]);
+            }
         }
 
 
