@@ -67,6 +67,7 @@ class CreateTelegramUser
                 $this->url = str_replace(['[',']'],'',$url);
             }
             $this->column = 'companycode';
+            $this->company =  Company::where($this->column,$this->text)->first();
         }
         return $this;
         //preg_match('/\[(.*?)\]/', '[http://partner.kuleshov.studio/api/telegram]', $matches);
@@ -121,7 +122,7 @@ class CreateTelegramUser
             $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правильный код организации!';
             $this->continue = false;
         }else{
-            $this->company = $company;
+
             $this->companyId = $company->id;
         }
         return $this;
