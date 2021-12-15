@@ -51,11 +51,8 @@ class TuserController extends Controller
 //        return json_decode($res->body(), 1);
 
     }
-
-
     public function webhookLink(Request $request)
     {
-
         if($request->isJson()){
             \Storage::append('link.txt', time());
             \Storage::append('link.txt', json_encode($request->all(), JSON_UNESCAPED_UNICODE));
@@ -67,6 +64,7 @@ class TuserController extends Controller
             \Storage::append('link.txt', $company);
             return response()->json($c->toArray());
         }
+        return 'Unknown format';
     }
     public function webhook(Request $request)
     {
@@ -78,7 +76,7 @@ class TuserController extends Controller
         }
         SendTelegramJob::dispatch([
 			 'chat_id' => $user->getUserId(),
-			 'text' => $user->getUserId(),
+			 'text' => $webhook_url,
 			 'parse_mode'=>'HTML'
 		]);
 
