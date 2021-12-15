@@ -72,11 +72,12 @@ class TuserController extends Controller
         if($user->fromLinkButton){
             $webhook_url = Company::find($user->getCompanyId())->webhook;
             $data = ["userId" => $user->getUserId(),'url'=>$webhook_url];
-            $this->toPartner( "http://partner.kuleshov.studio/api/telegram",$data);
+            $res = Http::timeout(5)->post($webhook_url,$data);
+            \Storage::append('ssdd.txt', json_encode($res->body()));
         }
         SendTelegramJob::dispatch([
 			 'chat_id' => $user->getUserId(),
-			 'text' => $webhook_url,
+			 'text' => 656465,
 			 'parse_mode'=>'HTML'
 		]);
 
