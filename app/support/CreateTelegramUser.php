@@ -178,7 +178,7 @@ class CreateTelegramUser
         \Storage::append('updateId.txt', $this->updateId );
         $t = TelegramBot::where('update_id',$this->updateId)->first();
         \Storage::append('tel.txt', json_encode($t,JSON_UNESCAPED_UNICODE) );
-        if($t){
+        if($t!==null){
             \Storage::append('inside.txt','inside1' );
             if($this->replyText !=''){
                 SendTelegramJob::dispatch([
