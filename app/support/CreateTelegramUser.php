@@ -4,6 +4,7 @@ namespace App\support;
 
 use App\Jobs\SendTelegramJob;
 use App\Models\Company;
+use App\Models\TelegramBot;
 use App\Models\Tuser;
 
 class CreateTelegramUser
@@ -32,7 +33,7 @@ class CreateTelegramUser
             $this->first_name = $this->load['message']['chat']['first_name'] ?? '';
             $this->last_name = $this->load['message']['chat']['last_name'] ?? '';
             $this->user_name =  $this->load['message']['chat']['username'] ?? '';
-            $this->updateId =  $this->load['update_id'] ?? false;
+            $this->updateId =   substr($this->load['update_id'],0,4);
             $this->continue = true;
             $this->replyText = '';
             $this->company = null;
@@ -127,8 +128,11 @@ class CreateTelegramUser
             $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правильный код организации!';
             $this->continue = false;
         }else{
-
             $this->companyId = $company->id;
+            $this->company = Company::find($this->companyId);
+            $bot = $this->company->telegramBot;
+            $bot->update_id = substr($this->updateId,0,4);
+            $bot->save();
         }
         return $this;
     }
@@ -171,12 +175,26 @@ class CreateTelegramUser
         return $this;
     }
     public function reply(){
-        if($this->replyText !=''){
-            SendTelegramJob::dispatch([
-                'chat_id' => $this->user_id,
-                'text' => $this->replyText,
-                'parse_mode'=>'HTML'
-            ]);
+        $t = TelegramBot::where('update_id',$this->updateId)->first();
+        if($t){
+            if($this->replyText !=''){
+                SendTelegramJob::dispatch([
+                    'chat_id' => $this->user_id,
+                    'text' => $this->replyText,
+                    'company' => $t->update_id,
+                    'parse_mode'=>'HTML'
+                ]);
+            }
+        }else{
+            $t = TelegramBot::where('update_id',null)->first();
+            if($this->replyText !=''&& $t){
+                SendTelegramJob::dispatch([
+                    'chat_id' => $this->user_id,
+                    'text' => $this->replyText,
+                    'company' => $t->update_id,
+                    'parse_mode'=>'HTML'
+                ]);
+            }
         }
         return $this;
     }
