@@ -21,7 +21,7 @@ class CreateTelegramUser
     protected $companyId;
     protected $company;
     protected $column;
-    public $url;
+    protected $remoteUserId;
     public function __construct($request)
     {
         if ($request->isJson()) {
@@ -62,10 +62,11 @@ class CreateTelegramUser
 
         if($this->fromLinkButton){
             $this->text = trim(str_replace('/start ','',$this->text));
+            $this->text =base64_decode($this->text);
             if(preg_match('/\[(.*?)\]/', $this->text, $matches)){
-                $url = $matches[0];
-                $this->text = trim(str_replace($url,'',$this->text));
-                $this->url = str_replace(['[',']'],'',$url);
+                $user = $matches[0];
+                $this->text = trim(str_replace($user,'',$this->text));
+                $this->remoteUserId = str_replace(['[',']'],'',$user);
             }
             $this->column = 'companycode';
             $this->company =  Company::where($this->column,$this->text)->first();
@@ -200,6 +201,14 @@ class CreateTelegramUser
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRemoteUserId()
+    {
+        return $this->remoteUserId;
     }
 
 }
