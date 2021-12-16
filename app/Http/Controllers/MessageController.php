@@ -70,7 +70,6 @@ class MessageController extends Controller
                                     'parse_mode' => 'HTML'
                                 ])->delay(now()->addSeconds(20));
                             }
-
                         }
                     }else{
                         $data = ['status' => 'failed','error'=>'no message'];
