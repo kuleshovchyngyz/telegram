@@ -37,6 +37,7 @@ class CompanyController extends Controller
         SendTelegramJob::dispatch([
             'chat_id' => $request['t_id'],
             'text' => $request['message'],
+            'company' => $company,
 			'parse_mode'=>'HTML'
 
         ])->delay(now()->addSeconds(1));

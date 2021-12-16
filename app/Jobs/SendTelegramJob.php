@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Models\Company;
+use Telegram\Bot\Api;
 
 class SendTelegramJob implements ShouldQueue
 {
@@ -21,11 +22,14 @@ class SendTelegramJob implements ShouldQueue
      * @param $data
      */
 
-    protected $data,$bot;
+    protected $data,$bot,$token;
 
     public function __construct($data)
     {
         $this->bot = $data['company'] ?? false;
+        if($this->bot!==false){
+            $this->token = $this->bot->telegramBot->token;
+        }
         $this->data = $data;
     }
 
@@ -36,8 +40,11 @@ class SendTelegramJob implements ShouldQueue
      */
     public function handle()
     {
-
-        Telegram::sendMessage($this->data);
-
+        if(!$this->bot){
+            Telegram::sendMessage($this->data);
+        }else{
+            $telegram = new Api($this->token);
+            $response = $telegram->sendMessage($this->data);
+        }
     }
 }

@@ -66,7 +66,7 @@ class MessageController extends Controller
                                 SendTelegramJob::dispatch([
                                     'chat_id' =>$message["userId"],
                                     'text' => $message["message"],
-                                    'company' => Company::find($message["company_id"]),
+                                    'company' => Company::find($company_code),
                                     'parse_mode' => 'HTML'
                                 ])->delay(now()->addSeconds(20));
                             }

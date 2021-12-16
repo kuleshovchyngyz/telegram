@@ -56,10 +56,7 @@ class HomeController extends Controller
             'text' => 'got message from you!'
         ]);*/
 
-        SendTelegramJob::dispatch([
-            'chat_id' => '555264497',
-            'text' => 'got message from you!'
-        ])->delay(now()->addMinutes(1));
+
 
 
 //        var_dump( env('QUEUE_CONNECTION') );
