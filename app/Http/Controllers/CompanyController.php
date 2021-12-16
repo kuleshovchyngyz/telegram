@@ -8,6 +8,7 @@ use App\Models\Tuser;
 use Illuminate\Http\Request;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Jobs\SendTelegramJob;
+use Telegram\Bot\Api;
 class CompanyController extends Controller
 {
     /**
@@ -70,6 +71,10 @@ class CompanyController extends Controller
             'username'=>$request->username,
             'token'=>$request->token
         ]);
+
+
+        $telegram = new Api($request->token);
+        $response = $telegram->setWebhook(['url' => route('telegramhook')]);
 
 
         return redirect()->back()->with('success_message', 'Бот создан');
