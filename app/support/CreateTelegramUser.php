@@ -175,6 +175,7 @@ class CreateTelegramUser
         return $this;
     }
     public function reply(){
+        \Storage::append('updateId.txt', $this->updateId );
         $t = TelegramBot::where('update_id',$this->updateId)->first();
         if($t){
             if($this->replyText !=''){
