@@ -120,6 +120,7 @@ class CreateTelegramUser
     }
     public function checkForValidCompany(){
         if(!$this->continue) return $this;
+
         $company = Company::where($this->column,$this->text)->first();
 
         if(!$company) {

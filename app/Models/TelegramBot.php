@@ -9,7 +9,7 @@ class TelegramBot extends Model
 {
     use HasFactory;
     protected $fillable = ['name','token','username', 'update_id'];
-    public function company(){
-
+    public function companies(){
+        return $this->hasMany(Company::class);
     }
 }
