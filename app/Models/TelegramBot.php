@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class TelegramBot extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','token','username	'];
+    protected $fillable = ['name','token','username', 'update_id'];
 }
