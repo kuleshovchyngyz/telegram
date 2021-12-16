@@ -121,7 +121,8 @@ class CreateTelegramUser
     public function checkForValidCompany(){
         if(!$this->continue) return $this;
         $company = Company::where($this->column,$this->text)->first();
-        if(!$company) {
+        $bot = $company->telegramBot;
+        if(!$company && $bot->update_id!=$this->updateId) {
             if($this->user_name ==""){
                 $this->replyText = 'Укажите правильный код организации!';
             }
