@@ -191,7 +191,7 @@ class CreateTelegramUser
                 SendTelegramJob::dispatch([
                     'chat_id' => $this->user_id,
                     'text' => $this->replyText,
-                    'company' => $t->update_id,
+                    'bot' => $t->token,
                     'parse_mode'=>'HTML'
                 ]);
             }

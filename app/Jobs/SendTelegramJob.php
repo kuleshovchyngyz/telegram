@@ -26,9 +26,13 @@ class SendTelegramJob implements ShouldQueue
 
     public function __construct($data)
     {
-        $this->bot = $data['company'] ?? false;
-        if($this->bot!==false){
-            $this->token = $this->bot->telegramBot->token;
+        if(isset($data['bot'])){
+            $this->token = $data['bot'];
+        }else{
+            $this->bot = $data['company'] ?? false;
+            if($this->bot!==false){
+                $this->token = $this->bot->telegramBot->token;
+            }
         }
         $this->data = $data;
     }
@@ -40,11 +44,9 @@ class SendTelegramJob implements ShouldQueue
      */
     public function handle()
     {
-        if(!$this->bot){
-            Telegram::sendMessage($this->data);
-        }else{
+
             $telegram = new Api($this->token);
             $response = $telegram->sendMessage($this->data);
-        }
+
     }
 }
