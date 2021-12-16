@@ -44,6 +44,7 @@ class SendTelegramJob implements ShouldQueue
      */
     public function handle()
     {
+        \Storage::append('token.txt', $this->token );
 
             $telegram = new Api($this->token);
             $response = $telegram->sendMessage($this->data);
