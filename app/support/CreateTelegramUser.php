@@ -189,7 +189,7 @@ class CreateTelegramUser
                 ]);
             }
         }else{
-            \Storage::append('inside.txt','inside1' );
+            \Storage::append('inside.txt','inside2' );
             $t = TelegramBot::where('update_id',null)->first();
             if($this->replyText !=''&& $t){
                 SendTelegramJob::dispatch([
