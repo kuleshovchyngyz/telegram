@@ -122,13 +122,21 @@ class CreateTelegramUser
         if(!$this->continue) return $this;
         $company = Company::where($this->column,$this->text)->first();
         $bot = $company->telegramBot;
-        if(!$company && $bot->update_id!=$this->updateId) {
+        if(!$company) {
             if($this->user_name ==""){
                 $this->replyText = 'Укажите правильный код организации!';
             }
             $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правильный код организации!';
             $this->continue = false;
-        }else{
+        }else if($company && $bot->update_id!=$this->updateId){
+            if($this->user_name ==""){
+                $this->replyText = 'Укажите правильный код организации!';
+            }
+            $this->replyText = '<strong>'.strval($this->user_name).'</strong>,	'.'укажите правильный код организации!';
+            $this->continue = false;
+        }
+        else
+        {
             $this->companyId = $company->id;
             $this->company = Company::find($this->companyId);
             $bot = $this->company->telegramBot;
