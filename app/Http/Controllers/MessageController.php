@@ -54,13 +54,23 @@ class MessageController extends Controller
                     $messages = $request->all()["data"];
                     if($messages){
                         foreach ($messages as $message) {
-                            Message::create([
-                                'message' => $message["message"],
-                                'status' => false,
-                                'company_id' => $c_id,
-                                'companycode' => "companycode",
-                                'uniquecode' => $hash
-                            ]);
+                            if(!isset($message['userId'])){
+                                Message::create([
+                                    'message' => $message["message"],
+                                    'status' => false,
+                                    'company_id' => $c_id,
+                                    'companycode' => "companycode",
+                                    'uniquecode' => $hash
+                                ]);
+                            }else{
+                                SendTelegramJob::dispatch([
+                                    'chat_id' =>$message["userId"],
+                                    'text' => $message["message"],
+                                    'company' => Company::find($message["company_id"]),
+                                    'parse_mode' => 'HTML'
+                                ])->delay(now()->addSeconds(20));
+                            }
+
                         }
                     }else{
                         $data = ['status' => 'failed','error'=>'no message'];
