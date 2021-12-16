@@ -21,6 +21,7 @@ class CreateTelegramUser
     protected $companyId;
     protected $company;
     protected $column;
+    protected $updateId;
     protected $remoteUserId;
     public function __construct($request)
     {
@@ -31,6 +32,7 @@ class CreateTelegramUser
             $this->first_name = $this->load['message']['chat']['first_name'] ?? '';
             $this->last_name = $this->load['message']['chat']['last_name'] ?? '';
             $this->user_name =  $this->load['message']['chat']['username'] ?? '';
+            $this->updateId =  $this->load['update_id'] ?? false;
             $this->continue = true;
             $this->replyText = '';
             $this->company = null;
@@ -57,8 +59,9 @@ class CreateTelegramUser
         }
         if(!$this->continue) return $this;
 
+        $rightButton = str_contains($this->text,'/start');
+        $this->fromLinkButton = $rightButton && (isset($this->load['message']['entities'])&& $this->text!=='/start') ? true : false;
 
-        $this->fromLinkButton = (isset($this->load['message']['entities'])&& $this->text!=='/start') ? true : false;
 
         if($this->fromLinkButton){
             $this->text = trim(str_replace('/start ','',$this->text));
