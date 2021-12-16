@@ -131,7 +131,7 @@ class CreateTelegramUser
             $this->companyId = $company->id;
             $this->company = Company::find($this->companyId);
             $bot = $this->company->telegramBot;
-            $bot->update_id = substr($this->updateId,0,4);
+            $bot->update_id = $this->updateId;
             $bot->save();
         }
         return $this;
