@@ -24,6 +24,7 @@ class CreateTelegramUser
     protected $column;
     protected $updateId;
     protected $remoteUserId;
+    protected $bot;
     public function __construct($request)
     {
         if ($request->isJson()) {
@@ -35,6 +36,12 @@ class CreateTelegramUser
             $this->user_name =  $this->load['message']['chat']['username'] ?? '';
             $this->updateId =   substr($this->load['update_id'],0,4);
             $this->continue = true;
+            $t = TelegramBot::where('update_id',$this->updateId);
+            if($t->exists()){
+                $this->bot = $t->first();
+            }else{
+                $this->bot = TelegramBot::where('update_id',null)->first();
+            }
             $this->replyText = '';
             $this->company = null;
             $this->column = 'usercode';
@@ -120,8 +127,12 @@ class CreateTelegramUser
     }
     public function checkForValidCompany(){
         if(!$this->continue) return $this;
-
-        $company = Company::where($this->column,$this->text)->first();
+        if($this->bot===null){
+            $this->replyText = 'PLese add the created bot!';
+            $this->continue = false;
+            return $this;
+        }
+        $company = $this->bot->companies->where($this->column,$this->text)->first();
 
         if(!$company) {
                 $this->replyText = 'Укажите правильный код организации!';
@@ -129,17 +140,11 @@ class CreateTelegramUser
         }
         else
         {
-            $bot = $company->telegramBot;
-            if(substr($bot->update_id,0,4)!=$this->updateId){
-                $this->replyText = 'Укажите правильный код организации!';
-                $this->continue = false;
-            }else{
                 $this->companyId = $company->id;
                 $this->company = Company::find($this->companyId);
                 $bot = $this->company->telegramBot;
                 $bot->update_id = $this->updateId;
                 $bot->save();
-            }
         }
         return $this;
     }
@@ -183,31 +188,15 @@ class CreateTelegramUser
     }
     public function reply(){
         \Storage::append('updateId.txt', $this->updateId );
-        $t = TelegramBot::where('update_id',$this->updateId)->first();
-        \Storage::append('tel.txt', json_encode($t,JSON_UNESCAPED_UNICODE) );
-        if($t!==null){
-            \Storage::append('inside.txt','inside1' );
-            if($this->replyText !=''){
+        if($this->replyText !=''){
                 SendTelegramJob::dispatch([
                     'chat_id' => $this->user_id,
                     'text' => $this->replyText,
-                    'bot' => $t->token,
+                    'bot' => $this->bot->token,
                     'parse_mode'=>'HTML'
                 ]);
             }
-        }else{
-            \Storage::append('inside.txt','inside2' );
-            $t = TelegramBot::where('update_id',null)->first();
-            \Storage::append('tell.txt', json_encode($t,JSON_UNESCAPED_UNICODE) );
-            if($this->replyText !=''&& $t){
-                SendTelegramJob::dispatch([
-                    'chat_id' => $this->user_id,
-                    'text' => $this->replyText,
-                    'bot' => $t->token,
-                    'parse_mode'=>'HTML'
-                ]);
-            }
-        }
+
         return $this;
     }
 
