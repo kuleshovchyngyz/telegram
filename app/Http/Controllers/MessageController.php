@@ -68,7 +68,7 @@ class MessageController extends Controller
                                     'text' => $message["message"],
                                     'company' => Company::find($company_code),
                                     'parse_mode' => 'HTML'
-                                ])->delay(now()->addSeconds(20));
+                                ])->delay(now()->addSeconds(5));
                             }
                         }
                     }else{
