@@ -214,6 +214,7 @@ class CompanyController extends Controller
             session()->forget(['selected_company_id', 'selected_company_name']);
         }
         $result = TelegramBot::destroy($bot->id);
+        session()->forget(['selected_bot_id', 'selected_bot_name']);
         return ( $result )
             ? redirect()->route('home')->with('success_message', 'Успешно удалено' )
             : redirect()->route('home')->with('error_message', 'Error');

@@ -30,24 +30,30 @@ class ViewData
             case 'botName':
                 if(session('selected_bot_id')){
                     $bot = TelegramBot::find(session('selected_bot_id'));
-                    $this->response = $bot->name;
-                    break;
+                    if($bot){
+                        $this->response = $bot->name;
+                        break;
+                    }
                 }
                 $this->response ="";
                 break;
             case 'username':
                 if(session('selected_bot_id')){
                     $bot = TelegramBot::find(session('selected_bot_id'));
-                    $this->response = $bot->username;
-                    break;
+                    if($bot) {
+                        $this->response = $bot->username;
+                        break;
+                    }
                 }
                 $this->response = "";
                 break;
             case 'token':
                 if(session('selected_bot_id')){
                     $bot = TelegramBot::find(session('selected_bot_id'));
-                    $this->response = $bot->token;
-                    break;
+                    if($bot) {
+                        $this->response = $bot->token;
+                        break;
+                    }
                 }
                 $this->response = "";
                 break;
