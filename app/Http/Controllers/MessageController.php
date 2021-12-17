@@ -65,6 +65,7 @@ class MessageController extends Controller
                                 ]);
                             }else{
                                 \Storage::disk('local')->append('whi.txt',2);
+                                \Storage::disk('local')->append('tbot.txt', json_encode(Company::find($company_code),JSON_UNESCAPED_UNICODE));
                                 SendTelegramJob::dispatch([
                                     'chat_id' =>$message["userId"],
                                     'text' => $message["message"],
