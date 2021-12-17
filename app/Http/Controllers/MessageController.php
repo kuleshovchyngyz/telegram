@@ -44,6 +44,7 @@ class MessageController extends Controller
         if ($request->isJson()) {
             \Storage::disk('local')->append('example.txt', json_encode($request->all(),JSON_UNESCAPED_UNICODE));
             $company_code = $request->all()["companycode"];
+            \Storage::disk('local')->append('example.txt',$company_code );
             $hash = md5(serialize( $request->all()));
             $c_id = Company::where('companycode',$company_code)->value('id');//Just for comaring for uniqueness of the given telegram id
             $spam = Message::where('uniquecode',$hash)->whereBetween('created_at', [now()->subMinutes(1), now()])->get()->count();//Making sure not to send too many identical json content
