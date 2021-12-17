@@ -46,7 +46,8 @@ class MessageController extends Controller
             $company_code = $request->all()["companycode"];
             \Storage::disk('local')->append('example.txt',$company_code );
             $hash = md5(serialize( $request->all()));
-            $c_id = Company::where('companycode',$company_code)->value('id');//Just for comaring for uniqueness of the given telegram id
+            $company = Company::where('companycode',$company_code);
+            $c_id = $company->value('id');//Just for comaring for uniqueness of the given telegram id
             $spam = Message::where('uniquecode',$hash)->whereBetween('created_at', [now()->subMinutes(1), now()])->get()->count();//Making sure not to send too many identical json content
             if($spam==0)
             {
@@ -66,11 +67,11 @@ class MessageController extends Controller
                                 ]);
                             }else{
                                 \Storage::disk('local')->append('whi.txt',2);
-                                \Storage::disk('local')->append('tbot.txt', json_encode(Company::find($company_code),JSON_UNESCAPED_UNICODE));
+                                \Storage::disk('local')->append('tbot.txt', json_encode($company->first(),JSON_UNESCAPED_UNICODE));
                                 SendTelegramJob::dispatch([
                                     'chat_id' =>$message["userId"],
                                     'text' => $message["message"],
-                                    'company' => Company::find($company_code),
+                                    'company' => $company->first(),
                                     'parse_mode' => 'HTML'
                                 ])->delay(now()->addSeconds(5));
                             }
