@@ -64,6 +64,7 @@ Auth::routes([
 
     'register' => false, // Register Routes...
 
+
     'reset' => false, // Reset Password Routes...
 
     'verify' => false, // Email Verification Routes...
@@ -90,6 +91,8 @@ Route::get('/test', [App\Http\Controllers\MessageController::class, 'test'])->na
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::post('/createcompany', [App\Http\Controllers\CompanyController::class, 'create'])->name('company.create');
     Route::post('/createbot', [App\Http\Controllers\CompanyController::class, 'createBot'])->name('bot.create');
+    Route::get('/deletebot/{bot}', [App\Http\Controllers\CompanyController::class, 'deleteBot'])->name('bot.destroy');
+    Route::post('/editbot/{bot}', [App\Http\Controllers\CompanyController::class, 'editBot'])->name('bot.edit');
     Route::get('select/{company}', [App\Http\Controllers\CompanyController::class, 'select'])->name('company.select');
     Route::post('edit/{company}', [App\Http\Controllers\CompanyController::class, 'edit'])->name('company.edit');
     Route::get('destroy/{company}', [App\Http\Controllers\CompanyController::class, 'destroy'])->name('company.destroy');

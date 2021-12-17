@@ -119,5 +119,39 @@
     </div>
   </div>
 </div>
-@endif
+@else
+  @if(session('selected_bot_id'))
+      <div class="modal fade" id="EditBot" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <form method="POST" action="{{ route('bot.edit', session('selected_bot_id')) }}">
+                      @csrf
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Редактирование бота</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                              <input type="text" class="form-control input_type1" id="name" name="name" value="{{ViewService::init()->view('botName') }}" placeholder="Название Бота">
+                          </div>
+                          <div class="form-group">
+                              <input type="text" class="form-control input_type1" id="username" value="{{ViewService::init()->view('username') }}" name="username" placeholder="@username">
+                          </div>
+                          <div class="form-group">
+                              <input type="text" class="form-control input_type1" id="token" value="{{ViewService::init()->view('token') }}" name="token" placeholder="Token">
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <a class="btn btn-danger" href="{{ route('bot.destroy', session('selected_bot_id')) }}" role="button">Удалить</a>
+                          <button type="submit" class="btn btn-success">Редактировать</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+
+  @endif
+  @endif
 @endauth

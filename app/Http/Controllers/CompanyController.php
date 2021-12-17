@@ -79,6 +79,21 @@ class CompanyController extends Controller
 
         return redirect()->back()->with('success_message', 'Бот создан');
     }
+    public function editBot(Request $request, TelegramBot $bot)
+    {
+
+        if($bot->token != $request->token){
+            $telegram = new Api($bot->token);
+            $response = $telegram->removeWebhook();
+            $telegram = new Api($request->token);
+            $response = $telegram->setWebhook(['url' => route('telegramhook')]);
+        }
+        $bot->update($request->all());
+
+
+
+        return redirect()->back()->with('success_message', 'Бот обновлен');
+    }
     public function create(Request $request)
     {
         if (session('selected_bot_id') ){
@@ -183,6 +198,22 @@ class CompanyController extends Controller
         Tuser::destroy($userids);
         $result = Company::destroy($company->id);
         session()->forget(['selected_company_id', 'selected_company_name']);
+        return ( $result )
+            ? redirect()->route('home')->with('success_message', 'Успешно удалено' )
+            : redirect()->route('home')->with('error_message', 'Error');
+    }
+    public function deleteBot(TelegramBot $bot)
+    {
+        $companies=$bot->companies;
+        foreach ($companies as $company){
+            $userids = Tuser::
+            where('company_id', $company->id)
+                ->pluck('id')->toArray();
+            Tuser::destroy($userids);
+            Company::destroy($company->id);
+            session()->forget(['selected_company_id', 'selected_company_name']);
+        }
+        $result = TelegramBot::destroy($bot->id);
         return ( $result )
             ? redirect()->route('home')->with('success_message', 'Успешно удалено' )
             : redirect()->route('home')->with('error_message', 'Error');

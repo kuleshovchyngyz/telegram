@@ -6,7 +6,7 @@
     <!-- Sidebar -->
     @if (session('selected_company_name') )
     <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">Menu </div>
+      <div class="sidebar-heading">Меню компаний </div>
       <div class="list-group list-group-flush">
         <a class="list-group-item list-group-item-action bg-light" data-toggle="modal" data-target="#EditCompany">Редактировать </a>
         <a href="{{ route('tusers', session('selected_company_id')) }}" class="list-group-item list-group-item-action bg-light">Users</a>
@@ -31,7 +31,19 @@
     </div>
     @else
         @if(session('selected_bot_id'))
-            {{ "maskat" }}
+
+            <div class="bg-light border-right" id="sidebar-wrapper">
+                <div class="sidebar-heading">Меню ботов</div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action bg-light" data-toggle="modal" data-target="#EditBot">Редактировать </a>
+
+
+                </div>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+
         @endif
     @endif
 
