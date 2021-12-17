@@ -57,7 +57,7 @@ class MessageController extends Controller
                     if($messages){
                         foreach ($messages as $message) {
                             if(!isset($message['userId'])){
-                                \Storage::disk('local')->append('whi.txt',1);
+
                                 Message::create([
                                     'message' => $message["message"],
                                     'status' => false,
@@ -66,8 +66,8 @@ class MessageController extends Controller
                                     'uniquecode' => $hash
                                 ]);
                             }else{
-                                \Storage::disk('local')->append('whi.txt',2);
-                                \Storage::disk('local')->append('tbot.txt', json_encode($company->first(),JSON_UNESCAPED_UNICODE));
+
+
                                 SendTelegramJob::dispatch([
                                     'chat_id' =>$message["userId"],
                                     'text' => $message["message"],

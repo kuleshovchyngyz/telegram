@@ -29,7 +29,11 @@
           @include('tmessages')
       </div>
     </div>
+    @else
+        @if(session('selected_bot_id'))
+            {{ "maskat" }}
         @endif
+    @endif
 
 
 </div>
