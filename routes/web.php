@@ -30,6 +30,14 @@ Route::get('/api/sample', function() {
     $json = json_decode($json, true);
     return $json;
 })->name('apilink');
+
+Route::get('/api/sampleuser', function() {
+    $json = \Storage::disk('local')->get('sampleuser.json');
+    $json = json_decode($json, true);
+    return $json;
+})->name('apilinkuser');
+
+
 Route::get('bot/sendmessage', function() {
     $telegram = new Api('1787584844:AAGLyrZ-1L8Ssg4Ys_sLIz8umQ5RrFJVI58');
     $sent = $telegram->sendMessage([
