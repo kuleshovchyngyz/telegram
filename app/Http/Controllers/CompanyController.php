@@ -24,7 +24,7 @@ class CompanyController extends Controller
     {
         $companies = Company::select('id','name')->get();
         $t_users = Tuser::where('company_id',session('selected_company_id'))->get(['t_id','first_name','username']);
-        $messages = Message::where('company_id',session('selected_company_id'))->paginate(15);
+        $messages = Message::where('company_id',session('selected_company_id'))->sortByDesc('created_at')->paginate(15);
         return view('home', [
             'companies'=> $companies,
             'message'=>'true',
@@ -84,7 +84,7 @@ class CompanyController extends Controller
 
         if($bot->token != $request->token){
             $telegram = new Api($bot->token);
-            $response = $telegram->removeWebhook();
+            //$response = $telegram->removeWebhook();
             $telegram = new Api($request->token);
             $response = $telegram->setWebhook(['url' => route('telegramhook')]);
         }

@@ -50,7 +50,7 @@ Route::get('bot/sendmessage', function() {
         $telegram = new Api('1709979892:AAEhRif1lR7vNZzd0nOJ8MEx7_jtoU8Hs3M');
 //        $response = $telegram->getMe();
         $response = $telegram->setWebhook(['url' => 'https://t.kuleshov.studio/api/webhook']);
-        dump($response);
+
     } catch (Exception $e) {
         if($e->getMessage()=='Unauthorized'){
             dump('invalid token');
