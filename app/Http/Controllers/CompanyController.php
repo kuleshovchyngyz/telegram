@@ -74,7 +74,7 @@ class CompanyController extends Controller
 
 
         $telegram = new Api($request->token);
-        $response = $telegram->setWebhook(['url' => route('telegramhook')]);
+        $response = $telegram->setWebhook(['url' => 'https://t.kuleshov.studio/api/webhook']);
 
 
         return redirect()->back()->with('success_message', 'Бот создан');
@@ -86,7 +86,7 @@ class CompanyController extends Controller
             $telegram = new Api($bot->token);
             //$response = $telegram->removeWebhook();
             $telegram = new Api($request->token);
-            $response = $telegram->setWebhook(['url' => route('telegramhook')]);
+            $response = $telegram->setWebhook(['url' => 'https://t.kuleshov.studio/api/webhook']);
         }
         $bot->update($request->all());
 
